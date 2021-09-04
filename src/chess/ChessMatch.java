@@ -28,12 +28,29 @@ public class ChessMatch {
 		
 	}
 	
+	
+	public boolean[][] possibleMoves(ChessPosition sourcePosition) {
+		
+		Position position = sourcePosition.toPosition();
+		validateSourcePosition(position);
+		return board.piece(position).possibleMoves();
+		
+	}
+	
 	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
 		Position source = sourcePosition.toPosition();
 		Position target = targetPosition.toPosition();
 		validateSourcePosition(source);
+		validateTargetPosition(source,target);
 		Piece captoredPiece = makeMove(source, target);
 		return (ChessPiece)captoredPiece;
+	}
+	
+	private void validateTargetPosition(Position source, Position target) {
+		if (!board.piece(source).possibleMove(target)) {
+			throw new ChessException("A peça não pode ser movida para a posição de destino");
+		}
+		
 	}
 	
 	private Piece makeMove(Position source, Position target) {
